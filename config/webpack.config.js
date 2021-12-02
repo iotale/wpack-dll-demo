@@ -1,10 +1,11 @@
 const path = require('path');
 const chalk = require('chalk');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const DllReferencePlugin = require('webpack/lib/DllReferencePlugin');
-// const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
+const DllReferencePlugin = require('webpack/lib/DllReferencePlugin');
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const AutoDllPlugin = require('autodll-webpack-plugin');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 module.exports = {
   mode: 'production',
@@ -36,6 +37,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, '..', 'index.html'),
     }),
+    new HardSourceWebpackPlugin(),
     // new DllReferencePlugin({
     //   manifest: require('../dist/react.manifest.json'),
     // }),
@@ -54,21 +56,21 @@ module.exports = {
     //     publicPath: '.',
     //   },
     // ]),
-    new AutoDllPlugin({
-      inject: true, // 设为 true 会把 Dll bundles 插到 index.html 里
-      filename: '[name].dll.js',
-      context: path.resolve(__dirname, '..'), // AutoDllPlugin 的 context 必须和 package.json 的同级目录，要不然会链接失败
-      entry: { // 对应 webpack_dll.config.js 配置文件中的 entry
-        react: [
-          'react',
-          'react-dom',
-        ],
-        polyfill: [
-          'core-js/features/object/assign',
-          'core-js/features/promise',
-          'whatwg-fetch',
-        ],
-      },
-    }),
+    // new AutoDllPlugin({
+    //   inject: true, // 设为 true 会把 Dll bundles 插到 index.html 里
+    //   filename: '[name].dll.js',
+    //   context: path.resolve(__dirname, '..'), // AutoDllPlugin 的 context 必须和 package.json 的同级目录，要不然会链接失败
+    //   entry: { // 对应 webpack_dll.config.js 配置文件中的 entry
+    //     react: [
+    //       'react',
+    //       'react-dom',
+    //     ],
+    //     polyfill: [
+    //       'core-js/features/object/assign',
+    //       'core-js/features/promise',
+    //       'whatwg-fetch',
+    //     ],
+    //   },
+    // }),
   ],
 };
